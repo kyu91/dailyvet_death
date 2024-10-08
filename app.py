@@ -54,12 +54,12 @@ def crawl_website():
             link = item.find_element(By.XPATH, './div[2]/a').get_attribute("href")
             date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
 
-            # # 날짜가 오늘과 일치할 때만 데이터를 추가
-            # if date == today:
-            #     data.append([title, link, date])
+            # 날짜가 오늘과 일치할 때만 데이터를 추가
+            if date == today:
+                data.append([title, link, date])
 
-            # 테스트용 그냥 보내기
-            data.append([title, link, date])
+            # # 테스트용 그냥 보내기
+            # data.append([title, link, date])
 
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
@@ -84,7 +84,7 @@ def send_email_with_table(table_html):
     receiver = os.environ['RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
     cc_receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 참조 이메일 가져오기
 
-    subject = "크롤링 데이터 알림"
+    subject = "데일리벳 부고게시판에 신규 업데이트 내역이 있습니다."
     body = f"<p>오늘 날짜의 크롤링된 데이터가 아래 표로 정리되었습니다.</p>{table_html}"
 
     msg = MIMEMultipart()
