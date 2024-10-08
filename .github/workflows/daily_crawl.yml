@@ -23,10 +23,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install selenium openpyxl pytz
 
-    - name: Set up ChromeDriver
-      uses: browser-actions/setup-chromedriver@v1
-      with:
-        chromedriver-version: 'latest'
+    - name: Install ChromeDriver  # ChromeDriver를 직접 설치
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        wget https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
 
     - name: Run the script
       env:
