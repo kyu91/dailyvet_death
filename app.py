@@ -54,9 +54,13 @@ def crawl_website():
             link = item.find_element(By.XPATH, './div[2]/a').get_attribute("href")
             date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
 
-            # 날짜가 오늘과 일치할 때만 데이터를 추가
-            if date == today:
-                data.append([title, link, date])
+            # # 날짜가 오늘과 일치할 때만 데이터를 추가
+            # if date == today:
+            #     data.append([title, link, date])
+
+            # 테스트용 그냥 보내기
+            data.append([title, link, date])
+
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
 
