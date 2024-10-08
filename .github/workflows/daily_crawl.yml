@@ -2,7 +2,8 @@ name: Daily Web Crawling and Email Notification
 
 on:
   schedule:
-    - cron: '00 23 * * *'  # 8 AM KST는 23:00 UTC
+    - cron: '00 23 * * *'  # 매일 한국시간 8AM 실행
+  workflow_dispatch:  # 수동 실행을 위한 설정
 
 jobs:
   build:
