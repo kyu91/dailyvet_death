@@ -59,7 +59,7 @@ def crawl_website():
                 data.append([title, link, date])
 
             # 테스트용 그냥 발송
-            data.append([title, link, date])
+            # data.append([title, link, date])
 
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
