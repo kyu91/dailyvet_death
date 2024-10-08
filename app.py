@@ -80,9 +80,9 @@ def format_data_as_table(data):
 
 # 이메일 전송 (첨부 파일 없이, 표를 본문에 포함)
 def send_email_with_table(table_html):
-    sender = 'SENDER'
-    receiver = 'RECEIVER'  # 메일 수신자
-    cc_receiver = 'CC_RECEIVER'  # 참조(CC)
+    sender = os.environ['SENDER']  # 환경 변수에서 발신자 이메일 가져오기
+    receiver = os.environ['RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
+    cc_receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 참조 이메일 가져오기
 
     subject = "크롤링 데이터 알림"
     body = f"<p>오늘 날짜의 크롤링된 데이터가 아래 표로 정리되었습니다.</p>{table_html}"
