@@ -8,7 +8,7 @@ import time
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime
+from datetime import datetime, timedelta  # timedelta를 사용하여 어제 날짜 계산
 import pytz
 import os
 
@@ -44,9 +44,9 @@ def crawl_website():
     all_items = driver.find_elements(By.XPATH, '//*[@id="mh-board"]//div[contains(@class, "single-board-item")]')
 
     data = []
-    # 한국 시간(KST)으로 날짜 설정
+    # 한국 시간(KST)으로 어제 날짜 설정
     kst = pytz.timezone('Asia/Seoul')
-    today = datetime.now(kst).strftime("%Y-%m-%d")  # 오늘 날짜를 'YYYY-MM-DD' 형식으로 가져오기
+    yesterday = (datetime.now(kst) - timedelta(days=1)).strftime("%Y-%m-%d")  # 어제 날짜를 'YYYY-MM-DD' 형식으로 가져오기
     for item in all_items:
         try:
             # 각 아이템 내에서 제목, 링크, 날짜를 찾음
@@ -54,12 +54,12 @@ def crawl_website():
             link = item.find_element(By.XPATH, './div[2]/a').get_attribute("href")
             date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
 
-            # 날짜가 오늘과 일치할 때만 데이터를 추가
-            if date == today:
+            # 날짜가 어제와 일치할 때만 데이터를 추가
+            if date == yesterday:
                 data.append([title, link, date])
 
-            # # 테스트용 그냥 보내기
-            # data.append([title, link, date])
+            # 테스트용 그냥 발송
+            data.append([title, link, date])
 
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
@@ -84,8 +84,8 @@ def send_email_with_table(table_html):
     receiver = os.environ['RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
     cc_receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 참조 이메일 가져오기
 
-    subject = "데일리벳 부고게시판에 신규 업데이트 내역이 있습니다."
-    body = f"<p>오늘 날짜의 크롤링된 데이터가 아래 표로 정리되었습니다.</p>{table_html}"
+    subject = "데일리벳 부고게시판에 어제 업데이트된 내역이 있습니다."
+    body = f"<p>어제 날짜의 크롤링된 데이터가 아래 표로 정리되었습니다.</p>{table_html}"
 
     msg = MIMEMultipart()
     msg['From'] = sender
@@ -114,7 +114,7 @@ def main():
         # 이메일로 테이블 전송
         send_email_with_table(table_html)
     else:
-        print("오늘 날짜에 해당하는 데이터가 없습니다.")
+        print("어제 날짜에 해당하는 데이터가 없습니다.")
 
 if __name__ == "__main__":
     main()
