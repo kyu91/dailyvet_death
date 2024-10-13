@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timedelta  # timedelta를 사용하여 어제 날짜 계산
 import pytz
 import os
+from webdriver_manager.chrome import ChromeDriverManager
 
 # 웹사이트 로그인 및 크롤링
 def crawl_website():
@@ -19,7 +20,9 @@ def crawl_website():
     chrome_options.add_argument("--headless")  # 화면 없이 실행
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    service = Service(executable_path='/usr/bin/chromedriver')  # GitHub Actions 환경에 맞게 경로 설정
+
+    # ChromeDriverManager로 Chrome 드라이버를 자동으로 설치 및 관리
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # 1. 페이지 접속
@@ -57,9 +60,6 @@ def crawl_website():
             # 날짜가 어제와 일치할 때만 데이터를 추가
             if date == yesterday:
                 data.append([title, link, date])
-
-            # 테스트용 그냥 발송
-            # data.append([title, link, date])
 
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
