@@ -62,6 +62,7 @@ def crawl_website():
             crawled_date = datetime.strptime(extracted_date, "%Y.%m.%d").date()
 
             print("yesterday :", raw_date)
+            print("yesterday: ", yesterday)
             print("crawled_date :", crawled_date)
 
             # 날짜가 10월 11일과 일치할 때만 데이터를 추가
