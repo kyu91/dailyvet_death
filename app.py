@@ -82,7 +82,7 @@ def format_data_as_table(data):
 # 이메일 전송 (첨부 파일 없이, 표를 본문에 포함)
 def send_email_with_table(table_html):
     sender = os.environ['SENDER']  # 환경 변수에서 발신자 이메일 가져오기
-    receiver = os.environ['RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
+    receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
     cc_receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 참조 이메일 가져오기
 
     subject = "데일리벳 부고게시판에 어제 업데이트된 내역이 있습니다."
