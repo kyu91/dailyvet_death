@@ -55,6 +55,9 @@ def crawl_website():
             link = item.find_element(By.XPATH, './div[2]/a').get_attribute("href")
             date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
 
+            print("date :", date)
+            print("target_date :", target_date)
+
             # 날짜가 어제와 일치할 때만 데이터를 추가
             if date == target_date:
                 data.append([title, link, date])
