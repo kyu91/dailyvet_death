@@ -1,8 +1,9 @@
-name: Daily Job
+name: Daily Web Crawling and Email Notification
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # 매일 오전 8시에 실행 (UTC 기준, KST로는 오후 5시)
+    - cron: '00 23 * * *'  # 매일 한국시간 8AM 실행
+  workflow_dispatch:  # 수동 실행을 위한 설정
 
 jobs:
   build:
@@ -19,26 +20,25 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m venv venv
-        . venv/bin/activate
-        pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install selenium openpyxl pytz
 
-    - name: Install Chrome and ChromeDriver
+    - name: Install ChromeDriver  # ChromeDriver를 직접 설치
       run: |
         sudo apt-get update
-        sudo apt-get install -y chromium-browser
-        sudo apt-get install -y chromium-chromedriver
-        sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver  # 드라이버 링크 설정
+        sudo apt-get install -y wget unzip
+        wget https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
 
-    - name: Run Python script
+    - name: Run the script
       env:
         USER_ID: ${{ secrets.USER_ID }}
         USER_PW: ${{ secrets.USER_PW }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         SENDER: ${{ secrets.SENDER }}
         RECEIVER: ${{ secrets.RECEIVER }}
         CC_RECEIVER: ${{ secrets.CC_RECEIVER }}
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
       run: |
-        . venv/bin/activate
         python app.py
