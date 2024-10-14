@@ -47,7 +47,7 @@ def crawl_website():
     # 한국 시간(KST)으로 어제 날짜 설정
     kst = pytz.timezone('Asia/Seoul')
     # yesterday = (datetime.now(kst) - timedelta(days=1)).strftime("%Y-%m-%d")  # 어제 날짜를 'YYYY-MM-DD' 형식으로 가져오기
-    target_date = "2023-10-11"  # 10월 11일 날짜를 YYYY-MM-DD 형식으로 고정
+    target_date = "2024.10.11"
     for item in all_items:
         try:
             # 각 아이템 내에서 제목, 링크, 날짜를 찾음
