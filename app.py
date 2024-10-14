@@ -46,8 +46,8 @@ def crawl_website():
     data = []
     # 한국 시간(KST)으로 어제 날짜 설정
     kst = pytz.timezone('Asia/Seoul')
-    # yesterday = (datetime.now(kst) - timedelta(days=1)).strftime("%Y-%m-%d")  # 어제 날짜를 'YYYY-MM-DD' 형식으로 가져오기
-    target_date = datetime(2024, 10, 11).date()
+    yesterday = (datetime.now(kst) - timedelta(days=1)).strftime("%Y-%m-%d")  # 어제 날짜를 'YYYY-MM-DD' 형식으로 가져오기
+    # target_date = datetime(2024, 10, 11).date()
 
     for item in all_items:
         try:
@@ -61,11 +61,11 @@ def crawl_website():
             # 추출된 문자열을 날짜 객체로 변환
             crawled_date = datetime.strptime(extracted_date, "%Y.%m.%d").date()
 
-            print("date :", raw_date)
-            print("target_date :", target_date)
+            print("yesterday :", raw_date)
+            print("crawled_date :", crawled_date)
 
             # 날짜가 10월 11일과 일치할 때만 데이터를 추가
-            if crawled_date == target_date:
+            if crawled_date == yesterday:
                 data.append([title, link, crawled_date])
 
             # 테스트용 그냥 발송
