@@ -54,14 +54,14 @@ def crawl_website():
             # 각 아이템 내에서 제목, 링크, 날짜를 찾음
             title = item.find_element(By.XPATH, './div[2]/a/span').text.strip()
             link = item.find_element(By.XPATH, './div[2]/a').get_attribute("href")
-            date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
+            raw_date = item.find_element(By.XPATH, './div[3]/div[1]').text.strip()
 
             # "등록일 - YYYY.MM.DD" 형식에서 날짜만 추출
             extracted_date = raw_date.split(" - ")[1]  # 'YYYY.MM.DD'만 추출
             # 추출된 문자열을 날짜 객체로 변환
             crawled_date = datetime.strptime(extracted_date, "%Y.%m.%d").date()
 
-            print("date :", date)
+            print("date :", raw_date)
             print("target_date :", target_date)
 
             # 날짜가 10월 11일과 일치할 때만 데이터를 추가
