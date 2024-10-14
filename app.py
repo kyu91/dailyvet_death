@@ -46,8 +46,7 @@ def crawl_website():
     data = []
     # 한국 시간(KST)으로 어제 날짜 설정
     kst = pytz.timezone('Asia/Seoul')
-    yesterday = (datetime.now(kst) - timedelta(days=1)).strftime("%Y-%m-%d")  # 어제 날짜를 'YYYY-MM-DD' 형식으로 가져오기
-    # target_date = datetime(2024, 10, 11).date()
+    yesterday = (datetime.now(kst) - timedelta(days=1)).date()  # 어제 날짜를 datetime 객체로 가져오기
 
     for item in all_items:
         try:
@@ -61,16 +60,14 @@ def crawl_website():
             # 추출된 문자열을 날짜 객체로 변환
             crawled_date = datetime.strptime(extracted_date, "%Y.%m.%d").date()
 
-            print("yesterday :", raw_date)
-            print("yesterday: ", yesterday)
-            print("crawled_date :", crawled_date)
+            # 디버깅을 위한 로그 출력 (값과 데이터 타입을 함께 출력)
+            print(f"raw_date (값): {raw_date}, (타입): {type(raw_date)}")
+            print(f"yesterday (값): {yesterday}, (타입): {type(yesterday)}")
+            print(f"crawled_date (값): {crawled_date}, (타입): {type(crawled_date)}")
 
-            # 날짜가 10월 11일과 일치할 때만 데이터를 추가
+            # 날짜가 어제와 일치할 때만 데이터를 추가
             if crawled_date == yesterday:
                 data.append([title, link, crawled_date])
-
-            # 테스트용 그냥 발송
-            # data.append([title, link, date])
 
         except Exception as e:
             print(f"데이터를 추출하는 중 오류 발생: {e}")
@@ -92,7 +89,7 @@ def format_data_as_table(data):
 # 이메일 전송 (첨부 파일 없이, 표를 본문에 포함)
 def send_email_with_table(table_html):
     sender = os.environ['SENDER']  # 환경 변수에서 발신자 이메일 가져오기
-    receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
+    receiver = os.environ['RECEIVER']  # 환경 변수에서 수신자 이메일 가져오기
     cc_receiver = os.environ['CC_RECEIVER']  # 환경 변수에서 참조 이메일 가져오기
 
     subject = "데일리벳 부고게시판에 어제 업데이트된 내역이 있습니다."
